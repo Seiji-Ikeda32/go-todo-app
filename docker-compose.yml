@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  go-backend:
+    build:
+      context: .
+      dockerfile: ./build/Dockerfile
+    tty: true
+    volumes:
+     - ./cmd:/go/src/github.com/Seiji-Ikeda32/go-todo-app
+
