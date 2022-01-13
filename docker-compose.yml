@@ -6,6 +6,8 @@ services:
       context: .
       dockerfile: ./build/Dockerfile
     tty: true
+    ports:
+      - "8080:8080"
     volumes:
      - ./cmd:/go/src/github.com/Seiji-Ikeda32/go-todo-app
 
