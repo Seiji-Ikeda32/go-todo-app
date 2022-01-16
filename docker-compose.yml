@@ -4,10 +4,10 @@ services:
   go-backend:
     build:
       context: .
-      dockerfile: ./build/Dockerfile
+      dockerfile: backend/build/Dockerfile
     tty: true
     ports:
       - "8080:8080"
     volumes:
-     - ./cmd:/go/src/github.com/Seiji-Ikeda32/go-todo-app
+     - ./cmd:/go/src/github.com/Seiji-Ikeda32/go-todo-app/backend
 
