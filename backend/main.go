@@ -17,9 +17,6 @@ func (h *MainHandler) ServeHTTP(w http.ResponseWriter, r *http.Request){
 func main() {
     fmt.Println("Hello world")
 
-    //mux := http.NewServeMux()
-    //mux.HandleFunc("/")
-
     log.Fatal(http.ListenAndServe(Port, &MainHandler{}))
 
 }
