@@ -4,19 +4,27 @@ import (
     "fmt"
     "log"
     "net/http"
+
+    "./internal/handlers/api"
 )
 
 const Port = ":8080"
 
-type MainHandler struct{}
-
-func (h *MainHandler) ServeHTTP(w http.ResponseWriter, r *http.Request){
-    fmt.Fprintf(w, "Hello World")
+func mainHandler(w http.ResponseWriter, r *http.Request) {
+    _, err := fmt.Fprint(w, "Hello World")
+    if err != nil {
+        return
+    }
 }
 
 func main() {
     fmt.Println("Hello world")
 
-    log.Fatal(http.ListenAndServe(Port, &MainHandler{}))
+    http.HandleFunc("/", mainHandler)
 
+    healthHandler := api.NewHealthHandler()
+
+    http.HandleFunc("/health", healthHandler.ServeHTTP)
+
+    log.Fatal(http.ListenAndServe(Port, nil))
 }
