@@ -10,5 +10,5 @@ services:
     ports:
       - "8080:8080"
     volumes:
-     - $PWD:/go/src/github.com/Seiji-Ikeda32/go-todo-app/backend
+     - ./backend:/go/src/github.com/Seiji-Ikeda32/go-todo-app/backend
 

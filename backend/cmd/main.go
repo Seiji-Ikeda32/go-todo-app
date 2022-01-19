@@ -1,30 +1,30 @@
 package main
 
 import (
-    "fmt"
-    "log"
-    "net/http"
+	"fmt"
+	"log"
+	"net/http"
 
-    . "../internal/handlers/api"
+	"github.com/Seiji-Ikeda32/go-todo-app/backend/handlers/api"
 )
 
 const Port = ":8080"
 
 func mainHandler(w http.ResponseWriter, r *http.Request) {
-    _, err := fmt.Fprint(w, "Hello World")
-    if err != nil {
-        return
-    }
+	_, err := fmt.Fprint(w, "Hello World")
+	if err != nil {
+		return
+	}
 }
 
 func main() {
-    fmt.Println("Hello world")
+	fmt.Println("Hello world")
 
-    http.HandleFunc("/", mainHandler)
+	http.HandleFunc("/", mainHandler)
 
-    healthHandler := NewHealthHandler()
+	healthHandler := NewHealthHandler()
 
-    http.HandleFunc("/health", healthHandler.ServeHTTP)
+	http.HandleFunc("/health", healthHandler.ServeHTTP)
 
-    log.Fatal(http.ListenAndServe(Port, nil))
+	log.Fatal(http.ListenAndServe(Port, nil))
 }

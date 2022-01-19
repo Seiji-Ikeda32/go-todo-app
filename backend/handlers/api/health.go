@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"net/http"
 
-	"../../models"
+	"github.com/Seiji-Ikeda32/go-todo-app/backend/models"
 )
 
-type HealthHandler struct {}
+type HealthHandler struct{}
 
 func NewHealthHandler() *HealthHandler {
 	return &HealthHandler{}
