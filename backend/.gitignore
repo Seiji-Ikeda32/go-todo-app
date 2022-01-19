@@ -1,0 +1,12 @@
+# デフォルトの無視対象ファイル
+/shelf/
+/workspace.xml
+# データソースのローカルストレージがファイルを無視しました
+/dataSources/
+/dataSources.local.xml
+# エディターベースの HTTP クライアントリクエスト
+/httpRequests/
+
+.DS_Store
+
+../.idea
