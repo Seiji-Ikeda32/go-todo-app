@@ -2,6 +2,7 @@ version: "3.8"
 
 services:
   go-backend:
+    container_name: go-backend
     build:
       context: .
       dockerfile: backend/build/Dockerfile
