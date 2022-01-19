@@ -5,7 +5,7 @@ import (
     "log"
     "net/http"
 
-    "../internal/handlers/api"
+    . "../internal/handlers/api"
 )
 
 const Port = ":8080"
@@ -22,7 +22,7 @@ func main() {
 
     http.HandleFunc("/", mainHandler)
 
-    healthHandler := api.NewHealthHandler()
+    healthHandler := NewHealthHandler()
 
     http.HandleFunc("/health", healthHandler.ServeHTTP)
 
