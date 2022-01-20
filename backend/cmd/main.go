@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-
-	"github.com/Seiji-Ikeda32/go-todo-app/backend/handlers/api"
 )
 
 const Port = ":8080"
