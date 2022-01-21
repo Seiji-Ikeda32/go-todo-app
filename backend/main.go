@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/Seiji-Ikeda32/go-todo-app/backend/handlers"
 )
 
 const Port = ":8080"
@@ -20,7 +22,7 @@ func main() {
 
 	http.HandleFunc("/", mainHandler)
 
-	healthHandler := NewHealthHandler()
+	healthHandler := handlers.NewHealthHandler()
 
 	http.HandleFunc("/health", healthHandler.ServeHTTP)
 
