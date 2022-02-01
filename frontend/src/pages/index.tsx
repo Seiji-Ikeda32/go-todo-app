@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
+import Link from 'next/link'
 import styles from '../styles/Home.module.css'
 
 const Home: NextPage = () => {
@@ -20,6 +21,13 @@ const Home: NextPage = () => {
         <p className={styles.description}>
           ファイルは{' '}
           <code className={styles.code}>src/pages/index.tsx</code>
+        </p>
+
+        <p className={styles.description}>
+          Health Checkは{' '}
+          <Link href="/healthCheck/health-check">
+            <a>こちら</a>
+          </Link>
         </p>
 
         <div className={styles.grid}>
