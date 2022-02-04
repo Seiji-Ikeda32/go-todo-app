@@ -7,8 +7,27 @@ services:
       context: .
       dockerfile: build/Dockerfile
     tty: true
+    environment:
+      DRIVER: mysql
     ports:
       - "8080:8080"
     volumes:
      - .:/go/src/github.com/Seiji-Ikeda32/go-todo-app/backend
+    depends_on:
+      - db
+  
+  db:
+    image: mysql:8.0
+    container_name: db
+    environment:
+      MYSQL_DATABASE: 'go_db'
+      MYSQL_USER: 'go_user'
+      MYSQL_PASSWORD: 'go_pass'
+      MYSQL_ROOT_PASSWORD: 'pass'
+    restart: always
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+      - ./mysql/data:/var/lib/mysql
 
