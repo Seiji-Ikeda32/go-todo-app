@@ -8,7 +8,8 @@ services:
       dockerfile: build/Dockerfile
     tty: true
     environment:
-      DRIVER: mysql
+      - DRIVER
+      - DSN
     ports:
       - "8080:8080"
     volumes:
@@ -20,10 +21,10 @@ services:
     image: mysql:8.0
     container_name: db
     environment:
-      MYSQL_DATABASE: 'go_db'
-      MYSQL_USER: 'go_user'
-      MYSQL_PASSWORD: 'go_pass'
-      MYSQL_ROOT_PASSWORD: 'pass'
+      - MYSQL_DATABASE
+      - MYSQL_USER
+      - MYSQL_PASSWORD
+      - MYSQL_ROOT_PASSWORD
     restart: always
     ports:
       - "3306:3306"

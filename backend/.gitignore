@@ -1,2 +1,4 @@
 # mysql data directory
 build/local/docker/database/data
+
+.env
