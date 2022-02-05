@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/Seiji-Ikeda32/go-todo-app/backend/db"
 	"github.com/Seiji-Ikeda32/go-todo-app/backend/handlers"
 )
 
@@ -18,6 +19,16 @@ func mainHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	db := db.OpenDB()
+	defer db.Close()
+
+	err := db.Ping()
+	if err != nil {
+		fmt.Println("faild connect database", err)
+		return
+	} else {
+		fmt.Println("success connect database")
+	}
 	fmt.Println("Hello world")
 
 	http.HandleFunc("/", mainHandler)

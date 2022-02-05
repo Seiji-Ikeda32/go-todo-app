@@ -10,16 +10,17 @@ services:
     environment:
       - DRIVER
       - DSN
+      - MYSQL_HOST
     ports:
       - "8080:8080"
     volumes:
      - .:/go/src/github.com/Seiji-Ikeda32/go-todo-app/backend
     depends_on:
-      - db
+      - dev-db
   
-  db:
-    image: mysql:8.0
-    container_name: db
+  dev-db:
+    container_name: dev-db
+    build: ./db/
     environment:
       - MYSQL_DATABASE
       - MYSQL_USER
@@ -29,6 +30,5 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./mysql/init:/docker-entrypoint-initdb.d
       - ./mysql/data:/var/lib/mysql
 

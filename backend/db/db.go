@@ -2,15 +2,21 @@ package db
 
 import (
 	"database/sql"
-	"log"
+	"fmt"
+	"os"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func OpenDB(driver, dsn string) *sql.DB {
+func OpenDB() *sql.DB {
+	driver := os.Getenv("DRIVER")
+	dsn := os.Getenv("DSN")
+
 	db, err := sql.Open(driver, dsn)
 	if err != nil {
-		log.Fatal("faild open database", err)
+		fmt.Println("faild open database", err)
+	} else {
+		fmt.Println("success open database")
 	}
 	return db
 }

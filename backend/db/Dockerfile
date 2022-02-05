@@ -6,4 +6,4 @@ EXPOSE 3306
 ADD ./my.cnf /etc/mysql/conf.d/my.cnf
 
 # docker runで実行
-CMD ["mysqld"]
+# CMD ["mysqld"]
