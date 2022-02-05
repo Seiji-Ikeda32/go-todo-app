@@ -1,3 +1,4 @@
-.DS_Store
+# mysql data directory
+mysql/data
 
-../.idea
+.env

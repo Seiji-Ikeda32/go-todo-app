@@ -7,8 +7,28 @@ services:
       context: .
       dockerfile: build/Dockerfile
     tty: true
+    environment:
+      - DRIVER
+      - DSN
+      - MYSQL_HOST
     ports:
       - "8080:8080"
     volumes:
      - .:/go/src/github.com/Seiji-Ikeda32/go-todo-app/backend
+    depends_on:
+      - dev-db
+  
+  dev-db:
+    container_name: dev-db
+    build: ./db/
+    environment:
+      - MYSQL_DATABASE
+      - MYSQL_USER
+      - MYSQL_PASSWORD
+      - MYSQL_ROOT_PASSWORD
+    restart: always
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql/data:/var/lib/mysql
 
