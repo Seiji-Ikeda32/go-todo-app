@@ -3,7 +3,10 @@ FROM mysql:8.0
 EXPOSE 3306
 
 # MySQL設定ファイルをイメージ内にコピー
-ADD ./my.cnf /etc/mysql/conf.d/my.cnf
+COPY ./my.cnf /etc/mysql/conf.d/my.cnf
 
-# docker runで実行
-# CMD ["mysqld"]
+# 初期データ投入ファイル
+COPY ./initdb.d/initial.sql /docker-entrypoint-initdb.d/
+
+# 実行
+CMD ["mysqld"]
