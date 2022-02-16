@@ -11,3 +11,8 @@ type Todo struct {
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
 }
+
+type TodoRequest struct {
+	Title       string `json:"title"`
+	Discription string `json:"discription"`
+}
