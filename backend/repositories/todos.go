@@ -31,5 +31,6 @@ func (tr *todoRepository) CreateTodo(todo models.Todo) (id int, err error) {
 	if err != nil {
 		log.Fatalln(err)
 	}
+	err = db.QueryRow("SELECT id FROM todo ORDER BY id DESC LIMIT 1").Scan(&id)
 	return
 }

@@ -42,7 +42,7 @@ func main() {
 
 	http.HandleFunc("/health", healthHandler.ServeHTTP)
 
-	http.HandleFunc("/todos", ro.HandleTodoRequest)
+	http.HandleFunc("/todos/", ro.HandleTodoRequest)
 
 	log.Fatal(http.ListenAndServe(Port, nil))
 }
