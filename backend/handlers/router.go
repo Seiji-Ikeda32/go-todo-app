@@ -16,6 +16,8 @@ func NewRouter(th TodoHandler) Router {
 
 func (ro *router) HandleTodoRequest(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
+	case "GET":
+		ro.th.GetTodos(w, r)
 	case "POST":
 		ro.th.PostTodo(w, r)
 	}

@@ -11,6 +11,7 @@ import (
 
 type TodoHandler interface {
 	PostTodo(w http.ResponseWriter, r *http.Request)
+	GetTodos(w http.ResponseWriter, r *http.Request)
 }
 
 type todoHandler struct {
@@ -19,6 +20,35 @@ type todoHandler struct {
 
 func NewTodoHandler(tr repositories.TodoRepository) TodoHandler {
 	return &todoHandler{tr}
+}
+
+func (th *todoHandler) GetTodos(w http.ResponseWriter, r *http.Request) {
+	todos, err := th.tr.GetTodos()
+	if err != nil {
+		w.WriteHeader(500)
+		return
+	}
+
+	var todoResponses []models.Todo
+	for _, v := range todos {
+		todoResponses = append(todoResponses, models.Todo{
+			Id:          v.Id,
+			Title:       v.Title,
+			Discription: v.Discription,
+			IsCompleted: v.IsCompleted,
+			DueTime:     v.DueTime,
+			CreatedAt:   v.CreatedAt,
+			UpdatedAt:   v.UpdatedAt,
+		})
+	}
+
+	var todosResponse models.TodosResponse
+	todosResponse.Todos = todoResponses
+
+	res, _ := json.Marshal(todosResponse.Todos)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(res)
 }
 
 func (th *todoHandler) PostTodo(w http.ResponseWriter, r *http.Request) {

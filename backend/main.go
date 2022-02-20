@@ -16,27 +16,11 @@ var tr = repositories.NewTodoRepository()
 var tc = handlers.NewTodoHandler(tr)
 var ro = handlers.NewRouter(tc)
 
-func mainHandler(w http.ResponseWriter, r *http.Request) {
-	_, err := fmt.Fprint(w, "Hello World")
-	if err != nil {
-		return
-	}
-}
-
 func main() {
 	db := db.OpenDB()
 	defer db.Close()
 
-	err := db.Ping()
-	if err != nil {
-		fmt.Println("faild connect database", err)
-		return
-	} else {
-		fmt.Println("success connect database")
-	}
 	fmt.Println("Hello world")
-
-	http.HandleFunc("/", mainHandler)
 
 	healthHandler := handlers.NewHealthHandler()
 
