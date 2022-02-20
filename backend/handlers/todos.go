@@ -1,9 +1,11 @@
 package handlers
 
 import (
+	"database/sql"
 	"encoding/json"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/Seiji-Ikeda32/go-todo-app/backend/models"
 	"github.com/Seiji-Ikeda32/go-todo-app/backend/repositories"
@@ -57,7 +59,15 @@ func (th *todoHandler) PostTodo(w http.ResponseWriter, r *http.Request) {
 	var todoRequest models.TodoRequest
 	json.Unmarshal(body, &todoRequest)
 
-	todo := models.Todo{Title: todoRequest.Title, Discription: todoRequest.Discription}
+	todo := models.Todo{
+		Title:       todoRequest.Title,
+		Discription: todoRequest.Discription,
+		DueTime:     todoRequest.DueTime,
+		CreatedAt: sql.NullTime{
+			Valid: true,
+			Time:  time.Now(),
+		},
+	}
 
 	id, err := th.tr.CreateTodo(todo)
 	if err != nil {

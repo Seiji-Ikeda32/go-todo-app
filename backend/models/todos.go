@@ -15,8 +15,10 @@ type Todo struct {
 }
 
 type TodoRequest struct {
-	Title       string `json:"title"`
-	Discription string `json:"discription"`
+	Title       string       `json:"title"`
+	Discription string       `json:"discription"`
+	DueTime     sql.NullTime `json:"due_time"`
+	CreatedAt   sql.NullTime `json:"created_at"`
 }
 
 type TodosResponse struct {

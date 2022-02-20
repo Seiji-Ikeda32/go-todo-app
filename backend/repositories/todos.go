@@ -55,10 +55,12 @@ func (tr *todoRepository) CreateTodo(todo models.Todo) (id int, err error) {
 	cmd := `insert into todos (
 		title,
 		discription,
-		created_at) values (?, ?, ?)`
+		due_time,
+		created_at) values (?, ?, ?, ?)`
 	_, err = db.Exec(cmd,
 		todo.Title,
 		todo.Discription,
+		todo.DueTime,
 		time.Now())
 	if err != nil {
 		log.Fatalln(err)
