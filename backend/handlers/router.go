@@ -20,5 +20,7 @@ func (ro *router) HandleTodoRequest(w http.ResponseWriter, r *http.Request) {
 		ro.th.GetTodos(w, r)
 	case "POST":
 		ro.th.PostTodo(w, r)
+	case "PUT":
+		ro.th.PutTodo(w, r)
 	}
 }

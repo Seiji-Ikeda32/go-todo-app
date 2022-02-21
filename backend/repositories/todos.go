@@ -11,6 +11,7 @@ import (
 type TodoRepository interface {
 	GetTodos() (todos []models.Todo, err error)
 	CreateTodo(todo models.Todo) (id int, err error)
+	UpdateTodo(todo models.Todo) (err error)
 }
 
 type todoRepository struct{}
@@ -66,5 +67,23 @@ func (tr *todoRepository) CreateTodo(todo models.Todo) (id int, err error) {
 		log.Fatalln(err)
 	}
 	err = db.QueryRow("SELECT id FROM todo ORDER BY id DESC LIMIT 1").Scan(&id)
+	return
+}
+
+func (tr *todoRepository) UpdateTodo(todo models.Todo) (err error) {
+	db := db.OpenDB()
+	cmd := `UPDATE todos SET
+	    title = ?,
+		discription = ?,
+		IsCompleted = ?,
+		due_time = ?,
+		updated_at = ? WHERE id = ?`
+	_, err = db.Exec(cmd,
+		todo.Title,
+		todo.Discription,
+		todo.IsCompleted,
+		todo.DueTime,
+		time.Now(),
+		todo.Id)
 	return
 }
