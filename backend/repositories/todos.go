@@ -12,6 +12,7 @@ type TodoRepository interface {
 	GetTodos() (todos []models.Todo, err error)
 	CreateTodo(todo models.Todo) (id int, err error)
 	UpdateTodo(todo models.Todo) (err error)
+	DeleteTodo(id int) (err error)
 }
 
 type todoRepository struct{}
@@ -85,5 +86,11 @@ func (tr *todoRepository) UpdateTodo(todo models.Todo) (err error) {
 		todo.DueTime,
 		time.Now(),
 		todo.Id)
+	return
+}
+
+func (tr *todoRepository) DeleteTodo(id int) (err error) {
+	db := db.OpenDB()
+	_, err = db.Exec("DELETE FROM todos WHERE id = ?", id)
 	return
 }
