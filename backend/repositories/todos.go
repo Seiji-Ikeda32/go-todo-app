@@ -9,6 +9,7 @@ import (
 )
 
 type TodoRepository interface {
+	GetTodo(id int) (todo models.Todo, err error)
 	GetTodos() (todos []models.Todo, err error)
 	CreateTodo(todo models.Todo) (id int, err error)
 	UpdateTodo(todo models.Todo) (err error)
@@ -21,11 +22,31 @@ func NewTodoRepository() TodoRepository {
 	return &todoRepository{}
 }
 
+func (tr *todoRepository) GetTodo(id int) (todo models.Todo, err error) {
+	db := db.OpenDB()
+	todo = models.Todo{}
+	row := db.QueryRow("SELECT * FROM todos WHERE id = ?", id)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	err = row.Scan(
+		&todo.Id,
+		&todo.Title,
+		&todo.Discription,
+		&todo.IsCompleted,
+		&todo.DueTime,
+		&todo.CreatedAt,
+		&todo.UpdatedAt,
+	)
+	return
+}
+
 func (tr *todoRepository) GetTodos() (todos []models.Todo, err error) {
 	db := db.OpenDB()
 	todos = []models.Todo{}
 
-	rows, err := db.Query("SELECT id, title, discription, isCompleted, due_time, created_at, updated_at FROM todos ORDER BY id DESC")
+	rows, err := db.Query("SELECT * FROM todos ORDER BY id DESC")
 	if err != nil {
 		log.Println(err)
 		return

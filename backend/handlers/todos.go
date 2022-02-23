@@ -3,6 +3,7 @@ package handlers
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"path"
 	"strconv"
@@ -13,6 +14,7 @@ import (
 )
 
 type TodoHandler interface {
+	GetTodo(w http.ResponseWriter, r *http.Request)
 	GetTodos(w http.ResponseWriter, r *http.Request)
 	PostTodo(w http.ResponseWriter, r *http.Request)
 	PutTodo(w http.ResponseWriter, r *http.Request)
@@ -25,6 +27,27 @@ type todoHandler struct {
 
 func NewTodoHandler(tr repositories.TodoRepository) TodoHandler {
 	return &todoHandler{tr}
+}
+
+func (th *todoHandler) GetTodo(w http.ResponseWriter, r *http.Request) {
+	todoId, err := strconv.Atoi(path.Base(r.URL.Path))
+	if err != nil {
+		w.WriteHeader(400)
+		return
+	}
+
+	todo, err := th.tr.GetTodo(todoId)
+	if err != nil {
+		w.WriteHeader(500)
+		return
+	}
+
+	fmt.Println(todo)
+
+	res, _ := json.Marshal(todo)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(res)
 }
 
 func (th *todoHandler) GetTodos(w http.ResponseWriter, r *http.Request) {
@@ -84,7 +107,7 @@ func (th *todoHandler) PostTodo(w http.ResponseWriter, r *http.Request) {
 func (th *todoHandler) PutTodo(w http.ResponseWriter, r *http.Request) {
 	todoId, err := strconv.Atoi(path.Base(r.URL.Path))
 	if err != nil {
-		w.WriteHeader(500)
+		w.WriteHeader(400)
 		return
 	}
 
