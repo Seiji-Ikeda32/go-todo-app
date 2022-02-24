@@ -1,6 +1,9 @@
 package handlers
 
-import "net/http"
+import (
+	"net/http"
+	"strings"
+)
 
 type Router interface {
 	HandleTodoRequest(w http.ResponseWriter, r *http.Request)
@@ -15,14 +18,17 @@ func NewRouter(th TodoHandler) Router {
 }
 
 func (ro *router) HandleTodoRequest(w http.ResponseWriter, r *http.Request) {
-	switch r.Method {
-	case "GET":
+	userId := strings.TrimPrefix(r.URL.Path, "/todos/")
+	switch {
+	case r.Method == "GET" && userId == "":
 		ro.th.GetTodos(w, r)
-	case "POST":
+	case r.Method == "GET" && userId != "":
+		ro.th.GetTodo(w, r)
+	case r.Method == "POST":
 		ro.th.PostTodo(w, r)
-	case "PUT":
+	case r.Method == "PUT":
 		ro.th.PutTodo(w, r)
-	case "DELETE":
+	case r.Method == "DELETE":
 		ro.th.DeleteTodo(w, r)
 	}
 }
