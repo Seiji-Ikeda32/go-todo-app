@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"database/sql"
 	"log"
 	"time"
 
@@ -11,7 +12,7 @@ import (
 type TodoRepository interface {
 	GetTodo(id int) (todo models.Todo, err error)
 	GetTodos() (todos []models.Todo, err error)
-	CreateTodo(todo models.Todo) (id int, err error)
+	CreateTodo(todo models.Todo) (err error)
 	UpdateTodo(todo models.Todo) (err error)
 	DeleteTodo(id int) (err error)
 }
@@ -24,12 +25,10 @@ func NewTodoRepository() TodoRepository {
 
 func (tr *todoRepository) GetTodo(id int) (todo models.Todo, err error) {
 	db := db.OpenDB()
-	todo = models.Todo{}
+
 	row := db.QueryRow("SELECT * FROM todos WHERE id = ?", id)
-	if err != nil {
-		log.Println(err)
-		return
-	}
+
+	todo = models.Todo{}
 	err = row.Scan(
 		&todo.Id,
 		&todo.Title,
@@ -39,18 +38,27 @@ func (tr *todoRepository) GetTodo(id int) (todo models.Todo, err error) {
 		&todo.CreatedAt,
 		&todo.UpdatedAt,
 	)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			log.Println("指定したtodoは存在しません")
+		} else {
+			log.Println(err)
+		}
+	}
+
 	return
 }
 
 func (tr *todoRepository) GetTodos() (todos []models.Todo, err error) {
 	db := db.OpenDB()
-	todos = []models.Todo{}
 
 	rows, err := db.Query("SELECT * FROM todos ORDER BY id DESC")
 	if err != nil {
 		log.Println(err)
 		return
 	}
+
+	todos = []models.Todo{}
 
 	for rows.Next() {
 		todo := models.Todo{}
@@ -73,22 +81,25 @@ func (tr *todoRepository) GetTodos() (todos []models.Todo, err error) {
 	return
 }
 
-func (tr *todoRepository) CreateTodo(todo models.Todo) (id int, err error) {
+func (tr *todoRepository) CreateTodo(todo models.Todo) (err error) {
 	db := db.OpenDB()
+
 	cmd := `insert into todos (
 		title,
 		discription,
 		due_time,
 		created_at) values (?, ?, ?, ?)`
+
 	_, err = db.Exec(cmd,
 		todo.Title,
 		todo.Discription,
 		todo.DueTime,
-		time.Now())
+		time.Now(),
+	)
 	if err != nil {
 		log.Fatalln(err)
 	}
-	err = db.QueryRow("SELECT id FROM todo ORDER BY id DESC LIMIT 1").Scan(&id)
+
 	return
 }
 

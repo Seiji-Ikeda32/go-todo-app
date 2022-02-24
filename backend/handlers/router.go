@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"net/http"
-	"path"
+	"strings"
 )
 
 type Router interface {
@@ -18,18 +18,17 @@ func NewRouter(th TodoHandler) Router {
 }
 
 func (ro *router) HandleTodoRequest(w http.ResponseWriter, r *http.Request) {
-	switch r.Method {
-	case "GET":
-		if path.Base(r.URL.Path) == "/" {
-			ro.th.GetTodos(w, r)
-		} else {
-			ro.th.GetTodo(w, r)
-		}
-	case "POST":
+	userId := strings.TrimPrefix(r.URL.Path, "/todos/")
+	switch {
+	case r.Method == "GET" && userId == "":
+		ro.th.GetTodos(w, r)
+	case r.Method == "GET" && userId != "":
+		ro.th.GetTodo(w, r)
+	case r.Method == "POST":
 		ro.th.PostTodo(w, r)
-	case "PUT":
+	case r.Method == "PUT":
 		ro.th.PutTodo(w, r)
-	case "DELETE":
+	case r.Method == "DELETE":
 		ro.th.DeleteTodo(w, r)
 	}
 }

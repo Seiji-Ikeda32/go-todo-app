@@ -3,7 +3,6 @@ package handlers
 import (
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"path"
 	"strconv"
@@ -41,8 +40,6 @@ func (th *todoHandler) GetTodo(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(500)
 		return
 	}
-
-	fmt.Println(todo)
 
 	res, _ := json.Marshal(todo)
 
@@ -95,12 +92,12 @@ func (th *todoHandler) PostTodo(w http.ResponseWriter, r *http.Request) {
 		},
 	}
 
-	id, err := th.tr.CreateTodo(todo)
+	err := th.tr.CreateTodo(todo)
 	if err != nil {
 		w.WriteHeader(500)
 		return
 	}
-	w.Header().Set("Location", r.Host+r.URL.Path+strconv.Itoa(id))
+
 	w.WriteHeader(201)
 }
 
