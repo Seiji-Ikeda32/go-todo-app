@@ -30,6 +30,13 @@ const Home: NextPage = () => {
           </Link>
         </p>
 
+        <p className={styles.description}>
+          todoは{' '}
+          <Link href="/todo/">
+            <a>こちら</a>
+          </Link>
+        </p>
+
         <div className={styles.grid}>
           <a href="https://nextjs.org/docs/api-routes/introduction" className={styles.card}>
             <h2>Documentation &rarr;</h2>

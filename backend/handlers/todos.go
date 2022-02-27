@@ -57,6 +57,7 @@ func (th *todoHandler) GetTodos(w http.ResponseWriter, r *http.Request) {
 	res, _ := json.Marshal(todos)
 
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
 	w.Write(res)
 }
 
