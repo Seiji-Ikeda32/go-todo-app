@@ -54,25 +54,10 @@ func (th *todoHandler) GetTodos(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var todoResponses []models.Todo
-	for _, todo := range todos {
-		todoResponses = append(todoResponses, models.Todo{
-			Id:          todo.Id,
-			Title:       todo.Title,
-			Discription: todo.Discription,
-			IsCompleted: todo.IsCompleted,
-			DueTime:     todo.DueTime,
-			CreatedAt:   todo.CreatedAt,
-			UpdatedAt:   todo.UpdatedAt,
-		})
-	}
-
-	var todosResponse models.TodosResponse
-	todosResponse.Todos = todoResponses
-
-	res, _ := json.Marshal(todosResponse.Todos)
+	res, _ := json.Marshal(todos)
 
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
 	w.Write(res)
 }
 

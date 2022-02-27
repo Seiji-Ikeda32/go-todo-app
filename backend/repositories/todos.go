@@ -29,6 +29,7 @@ func (tr *todoRepository) GetTodo(id int) (todo models.Todo, err error) {
 	row := db.QueryRow("SELECT * FROM todos WHERE id = ?", id)
 
 	todo = models.Todo{}
+	// pointerで渡した型に取得したデータをマッピング
 	err = row.Scan(
 		&todo.Id,
 		&todo.Title,
@@ -62,6 +63,7 @@ func (tr *todoRepository) GetTodos() (todos []models.Todo, err error) {
 
 	for rows.Next() {
 		todo := models.Todo{}
+		// pointerで渡した型に取得したデータをマッピング
 		err = rows.Scan(
 			&todo.Id,
 			&todo.Title,
