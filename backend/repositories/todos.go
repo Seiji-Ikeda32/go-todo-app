@@ -19,6 +19,7 @@ type TodoRepository interface {
 
 type todoRepository struct{}
 
+// TodoRepository構造体のポインタを返却
 func NewTodoRepository() TodoRepository {
 	return &todoRepository{}
 }

@@ -24,6 +24,7 @@ type todoHandler struct {
 	tr repositories.TodoRepository
 }
 
+// 引数にTodoRepositoryを受け取り、TodoHandler構造体のポインタを返却
 func NewTodoHandler(tr repositories.TodoRepository) TodoHandler {
 	return &todoHandler{tr}
 }

@@ -13,6 +13,7 @@ type router struct {
 	th TodoHandler
 }
 
+// 引数にTodoControllerを受け取り、Router構造体のポインタを返却
 func NewRouter(th TodoHandler) Router {
 	return &router{th}
 }
