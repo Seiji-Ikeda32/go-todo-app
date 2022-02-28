@@ -3,6 +3,7 @@ package handlers
 import (
 	"database/sql"
 	"encoding/json"
+	"log"
 	"net/http"
 	"path"
 	"strconv"
@@ -10,11 +11,12 @@ import (
 
 	"github.com/Seiji-Ikeda32/go-todo-app/backend/models"
 	"github.com/Seiji-Ikeda32/go-todo-app/backend/repositories"
+	"github.com/labstack/echo"
 )
 
 type TodoHandler interface {
 	GetTodo(w http.ResponseWriter, r *http.Request)
-	GetTodos(w http.ResponseWriter, r *http.Request)
+	GetTodos(c echo.Context) error
 	PostTodo(w http.ResponseWriter, r *http.Request)
 	PutTodo(w http.ResponseWriter, r *http.Request)
 	DeleteTodo(w http.ResponseWriter, r *http.Request)
@@ -48,18 +50,18 @@ func (th *todoHandler) GetTodo(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
-func (th *todoHandler) GetTodos(w http.ResponseWriter, r *http.Request) {
+func (th *todoHandler) GetTodos(c echo.Context) (err error) {
 	todos, err := th.tr.GetTodos()
 	if err != nil {
-		w.WriteHeader(500)
+		log.Println(err)
 		return
 	}
 
-	res, _ := json.Marshal(todos)
+	return c.JSON(http.StatusOK, todos)
 
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
-	w.Write(res)
+	// w.Header().Set("Content-Type", "application/json")
+	// w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+	// w.Write(res)
 }
 
 func (th *todoHandler) PostTodo(w http.ResponseWriter, r *http.Request) {
