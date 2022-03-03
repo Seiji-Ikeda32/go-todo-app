@@ -19,12 +19,14 @@ type TodoRepository interface {
 
 type todoRepository struct{}
 
+// TodoRepository構造体のポインタを返却
 func NewTodoRepository() TodoRepository {
 	return &todoRepository{}
 }
 
 func (tr *todoRepository) GetTodo(id int) (todo models.Todo, err error) {
 	db := db.OpenDB()
+	defer db.Close()
 
 	row := db.QueryRow("SELECT * FROM todos WHERE id = ?", id)
 
@@ -52,6 +54,7 @@ func (tr *todoRepository) GetTodo(id int) (todo models.Todo, err error) {
 
 func (tr *todoRepository) GetTodos() (todos []models.Todo, err error) {
 	db := db.OpenDB()
+	defer db.Close()
 
 	rows, err := db.Query("SELECT * FROM todos ORDER BY id DESC")
 	if err != nil {
@@ -85,6 +88,7 @@ func (tr *todoRepository) GetTodos() (todos []models.Todo, err error) {
 
 func (tr *todoRepository) CreateTodo(todo models.Todo) (err error) {
 	db := db.OpenDB()
+	defer db.Close()
 
 	cmd := `insert into todos (
 		title,
@@ -125,6 +129,7 @@ func (tr *todoRepository) UpdateTodo(todo models.Todo) (err error) {
 
 func (tr *todoRepository) DeleteTodo(id int) (err error) {
 	db := db.OpenDB()
+	defer db.Close()
 	_, err = db.Exec("DELETE FROM todos WHERE id = ?", id)
 	return
 }
