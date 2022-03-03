@@ -19,7 +19,13 @@ func NewRouter() *echo.Echo {
 	th := NewTodoHandler(tr)
 
 	e := echo.New()
+
 	e.GET("/todos", th.GetTodos)
+	e.GET("/todos/:id", th.GetTodo)
+	e.POST("/todos", th.PostTodo)
+	e.PUT("/todos/:id", th.PutTodo)
+	e.DELETE("/todos/:id", th.DeleteTodo)
+
 	return e
 }
 

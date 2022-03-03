@@ -2,10 +2,8 @@ package handlers
 
 import (
 	"database/sql"
-	"encoding/json"
 	"log"
 	"net/http"
-	"path"
 	"strconv"
 	"time"
 
@@ -15,11 +13,11 @@ import (
 )
 
 type TodoHandler interface {
-	GetTodo(w http.ResponseWriter, r *http.Request)
+	GetTodo(c echo.Context) error
 	GetTodos(c echo.Context) error
-	PostTodo(w http.ResponseWriter, r *http.Request)
-	PutTodo(w http.ResponseWriter, r *http.Request)
-	DeleteTodo(w http.ResponseWriter, r *http.Request)
+	PostTodo(c echo.Context) error
+	PutTodo(c echo.Context) error
+	DeleteTodo(c echo.Context) error
 }
 
 type todoHandler struct {
@@ -31,23 +29,27 @@ func NewTodoHandler(tr repositories.TodoRepository) TodoHandler {
 	return &todoHandler{tr}
 }
 
-func (th *todoHandler) GetTodo(w http.ResponseWriter, r *http.Request) {
-	todoId, err := strconv.Atoi(path.Base(r.URL.Path))
+func (th *todoHandler) GetTodo(c echo.Context) (err error) {
+	// todoId, err := strconv.Atoi(path.Base(r.URL.Path))
+
+	todoId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		w.WriteHeader(400)
+		log.Println(err)
 		return
 	}
 
 	todo, err := th.tr.GetTodo(todoId)
 	if err != nil {
-		w.WriteHeader(500)
+		log.Println(err)
 		return
 	}
 
-	res, _ := json.Marshal(todo)
+	return c.JSON(http.StatusOK, todo)
 
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(res)
+	// res, _ := json.Marshal(todo)
+
+	// w.Header().Set("Content-Type", "application/json")
+	// w.Write(res)
 }
 
 func (th *todoHandler) GetTodos(c echo.Context) (err error) {
@@ -64,11 +66,18 @@ func (th *todoHandler) GetTodos(c echo.Context) (err error) {
 	// w.Write(res)
 }
 
-func (th *todoHandler) PostTodo(w http.ResponseWriter, r *http.Request) {
-	body := make([]byte, r.ContentLength)
-	r.Body.Read(body)
+func (th *todoHandler) PostTodo(c echo.Context) (err error) {
+	// body := make([]byte, r.ContentLength)
+	// r.Body.Read(body)
+	// var todoRequest models.TodoRequest
+	// json.Unmarshal(body, &todoRequest)
+	c.Request().Header.Set("Content-Type", echo.MIMEApplicationJSONCharsetUTF8)
+
 	var todoRequest models.TodoRequest
-	json.Unmarshal(body, &todoRequest)
+	if err = c.Bind(&todoRequest); err != nil {
+		log.Println(err)
+		return
+	}
 
 	todo := models.Todo{
 		Title:       todoRequest.Title,
@@ -80,27 +89,33 @@ func (th *todoHandler) PostTodo(w http.ResponseWriter, r *http.Request) {
 		},
 	}
 
-	err := th.tr.CreateTodo(todo)
+	err = th.tr.CreateTodo(todo)
 	if err != nil {
-		w.WriteHeader(500)
+		log.Println(err)
 		return
 	}
 
-	w.WriteHeader(201)
+	return c.String(http.StatusOK, "created successfully")
 }
 
-func (th *todoHandler) PutTodo(w http.ResponseWriter, r *http.Request) {
-	todoId, err := strconv.Atoi(path.Base(r.URL.Path))
+func (th *todoHandler) PutTodo(c echo.Context) (err error) {
+	todoId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		w.WriteHeader(400)
+		log.Println(err)
 		return
 	}
 
-	body := make([]byte, r.ContentLength)
-	r.Body.Read(body)
+	// body := make([]byte, r.ContentLength)
+	// r.Body.Read(body)
+
+	// var todoRequest models.TodoRequest
+	// json.Unmarshal(body, &todoRequest)
 
 	var todoRequest models.TodoRequest
-	json.Unmarshal(body, &todoRequest)
+	if err = c.Bind(&todoRequest); err != nil {
+		log.Println(err)
+		return
+	}
 
 	todo := models.Todo{
 		Id:          todoId,
@@ -116,25 +131,25 @@ func (th *todoHandler) PutTodo(w http.ResponseWriter, r *http.Request) {
 
 	err = th.tr.UpdateTodo(todo)
 	if err != nil {
-		w.WriteHeader(500)
+		log.Println(err)
 		return
 	}
 
-	w.WriteHeader(204)
+	return c.String(http.StatusOK, "updated successfully")
 }
 
-func (th *todoHandler) DeleteTodo(w http.ResponseWriter, r *http.Request) {
-	todoId, err := strconv.Atoi(path.Base(r.URL.Path))
+func (th *todoHandler) DeleteTodo(c echo.Context) (err error) {
+	todoId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		w.WriteHeader(400)
+		log.Println(err)
 		return
 	}
 
 	err = th.tr.DeleteTodo(todoId)
 	if err != nil {
-		w.WriteHeader(500)
+		log.Println(err)
 		return
 	}
 
-	w.WriteHeader(204)
+	return c.String(http.StatusOK, "deleted successfully")
 }
