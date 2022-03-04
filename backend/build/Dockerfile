@@ -10,6 +10,7 @@ ADD . /go/src/github.com/Seiji-Ikeda32/go-todo-app/backend
 
 # モジュールをインストール
 RUN go mod download
+RUN go mod tidy
 
 # ホットリロードライブラリをインストール
 RUN go install github.com/cosmtrek/air@v1.27.3

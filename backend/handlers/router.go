@@ -1,8 +1,11 @@
 package handlers
 
 import (
+	"net/http"
+
 	"github.com/Seiji-Ikeda32/go-todo-app/backend/repositories"
 	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 )
 
 // type Router interface {
@@ -19,6 +22,10 @@ func NewRouter() *echo.Echo {
 	th := NewTodoHandler(tr)
 
 	e := echo.New()
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"http://localhost:3000"},
+		AllowHeaders: []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
+	}))
 
 	e.GET("/todos", th.GetTodos)
 	e.GET("/todos/:id", th.GetTodo)
