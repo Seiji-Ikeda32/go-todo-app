@@ -2,9 +2,10 @@ import axios from "axios";
 import Link from "next/link";
 import { type } from "os";
 import { useState } from "react";
+import Router from "next/router";
 
 type Todo ={
-  id: number;
+  id: string;
   title: string;
   discription: string;
   is_completed: boolean;
@@ -34,15 +35,14 @@ export default function todo() {
       <button onClick={getTodos}>getTodos</button>
       <ul>
         {todos.map((todo:Todo) =>
-          <li key={todo.id}>
-            <p>{todo.id}</p>
-            <p>{todo.title}</p>
-            <p>{todo.discription}</p>
-            <p>{todo.is_completed + ''}</p>
-            <p>{todo.due_time.Time}({todo.due_time.Valid + ''})</p>
-            <p>{todo.created_at.Time}({todo.created_at.Valid + ''})</p>
-            <p>{todo.updated_at.Time}({todo.updated_at.Valid + ''})</p>
-          </li>
+            <li key={todo.id}>
+              <span onClick={() => Router.push('/todo/[id]', `/todo/${todo.id}`)}>
+                <p>{todo.id}</p>
+              </span>
+              <p>タイトル：{todo.title}</p>
+              <p>説明：{todo.discription}</p>
+              <p>完了：{todo.is_completed + ''}</p>
+            </li>
         )}
       </ul>
 
