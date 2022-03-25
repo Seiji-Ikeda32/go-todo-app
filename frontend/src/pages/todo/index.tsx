@@ -1,8 +1,8 @@
 import axios from "axios";
 import Link from "next/link";
-import { type } from "os";
 import { useState } from "react";
-import Router from "next/router";
+import Title from "../../components/Title"
+import Button from "../../components/Button"
 
 type Todo ={
   id: string;
@@ -30,18 +30,18 @@ const todo = () => {
 
   return (
     <>
-      <h1>todo list</h1>
+      <Title titleName="todo 一覧" />
 
-      <button onClick={getTodos}>getTodos</button>
+      <Button buttonContent="todo一覧取得" onClick={getTodos} />
       <ul>
         {todos.map((todo:Todo) =>
             <li key={todo.id}>
               <Link href={`/todo/${todo.id}`}>
                 <p>{todo.id}</p>
               </Link>
-              <p>タイトル：{todo.title}</p>
-              <p>説明：{todo.discription}</p>
-              <p>完了：{todo.is_completed + ''}</p>
+              <p>タイトル:{todo.title}</p>
+              <p>説明:{todo.discription}</p>
+              <p>完了:{todo.is_completed + ''}</p>
             </li>
         )}
       </ul>
