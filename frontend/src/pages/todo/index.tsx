@@ -14,7 +14,7 @@ type Todo ={
   updated_at: {Time: string; Valid:boolean;};
 }
 
-export default function todo() {
+const todo = () => {
   const [todos, setTodos] = useState([]);
 
   const getTodos = () => {
@@ -36,9 +36,9 @@ export default function todo() {
       <ul>
         {todos.map((todo:Todo) =>
             <li key={todo.id}>
-              <span onClick={() => Router.push('/todo/[id]', `/todo/${todo.id}`)}>
+              <Link href={`/todo/${todo.id}`}>
                 <p>{todo.id}</p>
-              </span>
+              </Link>
               <p>タイトル：{todo.title}</p>
               <p>説明：{todo.discription}</p>
               <p>完了：{todo.is_completed + ''}</p>
@@ -54,3 +54,5 @@ export default function todo() {
     </>
   )
 }
+
+export default todo;
