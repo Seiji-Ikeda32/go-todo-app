@@ -1,8 +1,8 @@
 import axios from "axios";
 import Link from "next/link";
-import { type } from "os";
 import { useState } from "react";
-import Router from "next/router";
+import Title from "../../components/Title"
+import Button from "../../components/Button"
 
 type Todo ={
   id: string;
@@ -14,7 +14,7 @@ type Todo ={
   updated_at: {Time: string; Valid:boolean;};
 }
 
-export default function todo() {
+const todo = () => {
   const [todos, setTodos] = useState([]);
 
   const getTodos = () => {
@@ -30,18 +30,22 @@ export default function todo() {
 
   return (
     <>
-      <h1>todo list</h1>
+      <Title titleName="todo 一覧" />
 
-      <button onClick={getTodos}>getTodos</button>
+      <Link href={`/todo/create`}>
+          <h2>todo作成</h2>
+        </Link>
+
+      <Button buttonContent="todo一覧取得" onClick={getTodos} />
       <ul>
         {todos.map((todo:Todo) =>
             <li key={todo.id}>
-              <span onClick={() => Router.push('/todo/[id]', `/todo/${todo.id}`)}>
+              <Link href={`/todo/${todo.id}`}>
                 <p>{todo.id}</p>
-              </span>
-              <p>タイトル：{todo.title}</p>
-              <p>説明：{todo.discription}</p>
-              <p>完了：{todo.is_completed + ''}</p>
+              </Link>
+              <p>タイトル:{todo.title}</p>
+              <p>説明:{todo.discription}</p>
+              <p>完了:{todo.is_completed + ''}</p>
             </li>
         )}
       </ul>
@@ -54,3 +58,5 @@ export default function todo() {
     </>
   )
 }
+
+export default todo;
