@@ -32,6 +32,10 @@ const todo = () => {
     <>
       <Title titleName="todo 一覧" />
 
+      <Link href={`/todo/create`}>
+          <h2>todo作成</h2>
+        </Link>
+
       <Button buttonContent="todo一覧取得" onClick={getTodos} />
       <ul>
         {todos.map((todo:Todo) =>
