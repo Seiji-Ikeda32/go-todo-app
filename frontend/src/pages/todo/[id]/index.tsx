@@ -1,7 +1,10 @@
 import axios from "axios";
 import { NextPage, NextPageContext } from "next";
 import Link from "next/link";
+import { useRouter } from 'next/router';
+
 import Title from "../../../components/Title"
+import Button from "../../../components/Button";
 
 interface Props {
     todo: {
@@ -15,12 +18,31 @@ interface Props {
     }
 }
 
+
 const Tododetail: NextPage<Props> = ({todo}) => {
+    const router = useRouter();
+
+    const deleteTodo = () => {
+      if(confirm("このtodoを削除しますか？") ) {
+        axios.delete(`http://localhost:8080/todos/${todo.id}`)
+        .then(res => {
+            alert("todoを削除しました")
+            router.push('/todo')
+        })
+      }
+      else {
+        alert("削除を中止しました")
+      }
+    }
 
     return (
       <>
         <Title titleName="todo詳細ページ" />
         
+        <Link href={`/todo/${todo.id}/edit`}>
+          <h2>todo編集</h2>
+        </Link>
+
         <p>{todo.id}</p>
         <p>タイトル:{todo.title}</p>
         <p>説明:{todo.discription}</p>
@@ -29,10 +51,10 @@ const Tododetail: NextPage<Props> = ({todo}) => {
         <p>作成時間{todo.created_at.Time}({todo.created_at.Valid + ''})</p>
         <p>更新時間{todo.updated_at.Time}({todo.updated_at.Valid + ''})</p>
 
-        <Link href={`/todo/${todo.id}/edit`}>
-          <h2>todo編集</h2>
-        </Link>
-        <h2>todo削除</h2>
+        <Button
+          buttonContent={'todo削除'}
+          onClick={deleteTodo}
+        />
       </>
     )
 }
