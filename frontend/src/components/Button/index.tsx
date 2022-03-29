@@ -10,9 +10,7 @@ const Button: React.FunctionComponent<Props> = ({ children, onClick = () => ({})
     }, [onClick])
 
     return (
-        <>
-          <button onClick={handleClick}>{children}</button>
-        </>
+        <button onClick={handleClick}>{children}</button>
     );
 };
 
