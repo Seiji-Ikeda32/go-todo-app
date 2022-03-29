@@ -51,10 +51,7 @@ const Tododetail: NextPage<Props> = ({todo}) => {
         <p>作成時間{todo.created_at.Time}({todo.created_at.Valid + ''})</p>
         <p>更新時間{todo.updated_at.Time}({todo.updated_at.Valid + ''})</p>
 
-        <Button
-          buttonContent={'todo削除'}
-          onClick={deleteTodo}
-        />
+        <Button onClick={deleteTodo}>todo削除</Button>
       </>
     )
 }

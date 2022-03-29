@@ -36,7 +36,7 @@ const todo = () => {
           <h2>todo作成</h2>
         </Link>
 
-      <Button buttonContent="todo一覧取得" onClick={getTodos} />
+      <Button onClick={getTodos}>todo一覧取得</Button>
       <ul>
         {todos.map((todo:Todo) =>
             <li key={todo.id}>

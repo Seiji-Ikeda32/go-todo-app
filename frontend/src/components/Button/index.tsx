@@ -1,18 +1,17 @@
 import React, { useCallback } from 'react'
 
 interface Props {
-    buttonContent?: string
     onClick?: () => void
 }
 
-const Button: React.FunctionComponent<Props> = ({ buttonContent, onClick = () => ({}) }) => {
+const Button: React.FunctionComponent<Props> = ({ children, onClick = () => ({}) }) => {
     const handleClick = useCallback(() => {
         onClick()
     }, [onClick])
 
     return (
         <>
-          <button onClick={handleClick}>{buttonContent}</button>
+          <button onClick={handleClick}>{children}</button>
         </>
     );
 };

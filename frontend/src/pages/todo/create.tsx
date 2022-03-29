@@ -58,26 +58,23 @@ const TodoCreate = () => {
         />
 
         <p>完了</p>
-        <Button
-          buttonContent={is_completed + ''}
-          onClick={handleStatus}
-        />
+        <Button onClick={handleStatus}>
+          {is_completed + ''}
+        </Button>
 
         <p>期限</p>
-        <Button
-          buttonContent={due_valid + ''}
-          onClick={handleDueStatus}
-        />
+        <Button onClick={handleDueStatus}>
+          {due_valid + ''}
+        </Button>
         <input
           onChange={(e) => handleDueTime(e)}
           type={'text'}
           value={due_time}
         />
 
-        <Button
-          buttonContent="todo作成"
-          onClick={CreateTodo}
-        />
+        <Button onClick={CreateTodo}>
+          todo作成
+        </Button>
 
         <h2>todo削除</h2>
       </>
