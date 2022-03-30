@@ -10,11 +10,6 @@ import (
 
 const Port = ":8080"
 
-// var tr = repositories.NewTodoRepository()
-// var th = handlers.NewTodoHandler(tr)
-
-// var ro = handlers.NewRouter(tc)
-
 func main() {
 
 	fmt.Println("Hello world")
@@ -23,7 +18,6 @@ func main() {
 
 	http.HandleFunc("/health", healthHandler.ServeHTTP)
 
-	// http.HandleFunc("/todos/", ro.HandleTodoRequest)
 	router := handlers.NewRouter()
 	router.Logger.Fatal(router.Start(Port))
 
