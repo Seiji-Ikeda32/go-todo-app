@@ -30,8 +30,6 @@ func NewTodoHandler(tr repositories.TodoRepository) TodoHandler {
 }
 
 func (th *todoHandler) GetTodo(c echo.Context) (err error) {
-	// todoId, err := strconv.Atoi(path.Base(r.URL.Path))
-
 	todoId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		log.Println(err)
@@ -45,11 +43,6 @@ func (th *todoHandler) GetTodo(c echo.Context) (err error) {
 	}
 
 	return c.JSON(http.StatusOK, todo)
-
-	// res, _ := json.Marshal(todo)
-
-	// w.Header().Set("Content-Type", "application/json")
-	// w.Write(res)
 }
 
 func (th *todoHandler) GetTodos(c echo.Context) (err error) {
@@ -60,17 +53,9 @@ func (th *todoHandler) GetTodos(c echo.Context) (err error) {
 	}
 
 	return c.JSON(http.StatusOK, todos)
-
-	// w.Header().Set("Content-Type", "application/json")
-	// w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
-	// w.Write(res)
 }
 
 func (th *todoHandler) PostTodo(c echo.Context) (err error) {
-	// body := make([]byte, r.ContentLength)
-	// r.Body.Read(body)
-	// var todoRequest models.TodoRequest
-	// json.Unmarshal(body, &todoRequest)
 	c.Request().Header.Set("Content-Type", echo.MIMEApplicationJSONCharsetUTF8)
 
 	var todoRequest models.TodoRequest
@@ -104,12 +89,6 @@ func (th *todoHandler) PutTodo(c echo.Context) (err error) {
 		log.Println(err)
 		return
 	}
-
-	// body := make([]byte, r.ContentLength)
-	// r.Body.Read(body)
-
-	// var todoRequest models.TodoRequest
-	// json.Unmarshal(body, &todoRequest)
 
 	var todoRequest models.TodoRequest
 	if err = c.Bind(&todoRequest); err != nil {
