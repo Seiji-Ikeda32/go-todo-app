@@ -15,19 +15,19 @@ interface Props {
         id: string;
         title: string;
         discription: string;
-        is_completed: boolean;
-        due_time: NullTime;
-        created_at: NullTime;
-        updated_at: NullTime;
+        isCompleted: boolean;
+        dueTime: NullTime;
+        createdAt: NullTime;
+        updatedAt: NullTime;
     }
 }
 
 const TodoEdit: NextPage<Props> = ({todo}) => {
     const [title, setTitle] = useState(todo.title);
     const [discription, setDiscription] = useState(todo.discription);
-    const [isCompleted, setIsCompleted] = useState(todo.is_completed);
-    const [dueTimeStr, setDueTime] = useState(todo.due_time.Time);
-    const [dueValid, setDueValid] = useState(todo.due_time.Valid);
+    const [isCompleted, setIsCompleted] = useState(todo.isCompleted);
+    const [dueTimeStr, setDueTime] = useState(todo.dueTime.Time);
+    const [dueValid, setDueValid] = useState(todo.dueTime.Valid);
 
     const handleTitle = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value)
@@ -49,8 +49,8 @@ const TodoEdit: NextPage<Props> = ({todo}) => {
         axios.put(`http://localhost:8080/todos/${todo.id}`, {
             title: title,
             discription: discription,
-            is_completed: isCompleted,
-            due_time: {Time: dueTimeStr, Valid: dueValid}
+            isCompleted: isCompleted,
+            dueTime: {Time: dueTimeStr, Valid: dueValid}
         })
         .then(res => {
             alert("todoを更新しました")
@@ -91,8 +91,8 @@ const TodoEdit: NextPage<Props> = ({todo}) => {
           value={dueTimeStr}
         />
 
-        <p>作成時間{todo.created_at.Time}({todo.created_at.Valid + ''})</p>
-        <p>更新時間{todo.updated_at.Time}({todo.updated_at.Valid + ''})</p>
+        <p>作成時間{todo.createdAt.Time}({todo.createdAt.Valid + ''})</p>
+        <p>更新時間{todo.updatedAt.Time}({todo.updatedAt.Valid + ''})</p>
 
         <Button onClick={UpdateTodo}>todo更新</Button>
 

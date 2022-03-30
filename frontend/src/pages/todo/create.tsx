@@ -31,8 +31,8 @@ const TodoCreate = () => {
         axios.post("http://localhost:8080/todos/", {
             title: title,
             discription: discription,
-            is_completed: isCompleted,
-            due_time: {Time: dueTimeStr, Valid: dueValid}
+            isCompleted: isCompleted,
+            dueTime: {Time: dueTimeStr, Valid: dueValid}
         })
         .then(res => {
             alert("todoを作成しました")
