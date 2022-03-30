@@ -1,9 +1,14 @@
 import { NextPage, NextPageContext } from "next";
-import { useState } from "react";
+import { ChangeEvent, SetStateAction, useState } from "react";
 import axios from "axios";
 
 import Title from "../../../components/Title"
 import Button from "../../../components/Button";
+
+interface NullTime {
+    Time: string;
+    Valid: boolean;
+}
 
 interface Props {
     todo: {
@@ -11,26 +16,26 @@ interface Props {
         title: string;
         discription: string;
         is_completed: boolean;
-        due_time: {Time: string; Valid:boolean;};
-        created_at: {Time: string; Valid:boolean;};
-        updated_at: {Time: string; Valid:boolean;};
+        due_time: NullTime;
+        created_at: NullTime;
+        updated_at: NullTime;
     }
 }
 
 const TodoEdit: NextPage<Props> = ({todo}) => {
     const [title, setTitle] = useState(todo.title);
     const [discription, setDiscription] = useState(todo.discription);
-    const [is_completed, setIsCompleted] = useState(todo.is_completed);
-    const [due_time, setDueTime] = useState(todo.due_time.Time);
-    const [due_valid, setDueValid] = useState(todo.due_time.Valid);
+    const [isCompleted, setIsCompleted] = useState(todo.is_completed);
+    const [dueTimeStr, setDueTime] = useState(todo.due_time.Time);
+    const [dueValid, setDueValid] = useState(todo.due_time.Valid);
 
-    const handleTitle = (e: any) => {
+    const handleTitle = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value)
     }
-    const handleDiscription = (e: any) => {
+    const handleDiscription = (e: ChangeEvent<HTMLInputElement>) => {
         setDiscription(e.target.value)
     }
-    const handleDueTime = (e: any) => {
+    const handleDueTime = (e: ChangeEvent<HTMLInputElement>) => {
         setDueTime(e.target.value)
     }
     const handleStatus = () => {
@@ -44,8 +49,8 @@ const TodoEdit: NextPage<Props> = ({todo}) => {
         axios.put(`http://localhost:8080/todos/${todo.id}`, {
             title: title,
             discription: discription,
-            is_completed: is_completed,
-            due_time: {Time: due_time, Valid: due_valid}
+            is_completed: isCompleted,
+            due_time: {Time: dueTimeStr, Valid: dueValid}
         })
         .then(res => {
             alert("todoを更新しました")
@@ -73,17 +78,17 @@ const TodoEdit: NextPage<Props> = ({todo}) => {
 
         <p>完了</p>
         <Button onClick={handleStatus}>
-          {is_completed + ''}
+          {isCompleted + ''}
         </Button>
 
         <p>期限</p>
         <Button onClick={handleDueStatus}>
-          {due_valid + ''}
+          {dueValid + ''}
         </Button>
         <input
           onChange={(e) => handleDueTime(e)}
           type={'text'}
-          value={due_time}
+          value={dueTimeStr}
         />
 
         <p>作成時間{todo.created_at.Time}({todo.created_at.Valid + ''})</p>
