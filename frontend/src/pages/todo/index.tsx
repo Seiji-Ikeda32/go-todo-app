@@ -4,14 +4,19 @@ import { useState } from "react";
 import Title from "../../components/Title"
 import Button from "../../components/Button"
 
+interface NullTime {
+  Time: string;
+  Valid: boolean;
+}
+
 type Todo ={
   id: string;
   title: string;
   discription: string;
-  is_completed: boolean;
-  due_time: {Time: string; Valid:boolean;};
-  created_at: {Time: string; Valid:boolean;};
-  updated_at: {Time: string; Valid:boolean;};
+  isCompleted: boolean;
+  dueTime: NullTime;
+  createdAt: NullTime;
+  updatedAt: NullTime;
 }
 
 const todo = () => {
@@ -36,7 +41,7 @@ const todo = () => {
           <h2>todo作成</h2>
         </Link>
 
-      <Button buttonContent="todo一覧取得" onClick={getTodos} />
+      <Button onClick={getTodos}>todo一覧取得</Button>
       <ul>
         {todos.map((todo:Todo) =>
             <li key={todo.id}>
@@ -45,7 +50,7 @@ const todo = () => {
               </Link>
               <p>タイトル:{todo.title}</p>
               <p>説明:{todo.discription}</p>
-              <p>完了:{todo.is_completed + ''}</p>
+              <p>完了:{todo.isCompleted + ''}</p>
             </li>
         )}
       </ul>

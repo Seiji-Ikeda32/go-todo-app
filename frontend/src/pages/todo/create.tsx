@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import axios from "axios";
 
 import Title from "../../components/Title"
@@ -7,17 +7,17 @@ import Button from "../../components/Button";
 const TodoCreate = () => {
     const [title, setTitle] = useState('');
     const [discription, setDiscription] = useState('');
-    const [is_completed, setIsCompleted] = useState(false);
-    const [due_time, setDueTime] = useState();
-    const [due_valid, setDueValid] = useState(false);
+    const [isCompleted, setIsCompleted] = useState(false);
+    const [dueTimeStr, setDueTime] = useState("0001-01-01T00:00:00Z");
+    const [dueValid, setDueValid] = useState(false);
 
-    const handleTitle = (e: any) => {
+    const handleTitle = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value)
     }
-    const handleDiscription = (e: any) => {
+    const handleDiscription = (e: ChangeEvent<HTMLInputElement>) => {
         setDiscription(e.target.value)
     }
-    const handleDueTime = (e: any) => {
+    const handleDueTime = (e: ChangeEvent<HTMLInputElement>) => {
         setDueTime(e.target.value)
     }
     const handleStatus = () => {
@@ -31,8 +31,8 @@ const TodoCreate = () => {
         axios.post("http://localhost:8080/todos/", {
             title: title,
             discription: discription,
-            is_completed: is_completed,
-            due_time: {Time: due_time, Valid: due_valid}
+            isCompleted: isCompleted,
+            dueTime: {Time: dueTimeStr, Valid: dueValid}
         })
         .then(res => {
             alert("todoを作成しました")
@@ -58,26 +58,23 @@ const TodoCreate = () => {
         />
 
         <p>完了</p>
-        <Button
-          buttonContent={is_completed + ''}
-          onClick={handleStatus}
-        />
+        <Button onClick={handleStatus}>
+          {isCompleted + ''}
+        </Button>
 
         <p>期限</p>
-        <Button
-          buttonContent={due_valid + ''}
-          onClick={handleDueStatus}
-        />
+        <Button onClick={handleDueStatus}>
+          {dueValid + ''}
+        </Button>
         <input
           onChange={(e) => handleDueTime(e)}
           type={'text'}
-          value={due_time}
+          value={dueTimeStr}
         />
 
-        <Button
-          buttonContent="todo作成"
-          onClick={CreateTodo}
-        />
+        <Button onClick={CreateTodo}>
+          todo作成
+        </Button>
 
         <h2>todo削除</h2>
       </>
